@@ -113,7 +113,7 @@ def setup_face_rig():
 
     with open(json_file, 'r') as f:
         drivers = json.load(f)
-        return build_drivers(drivers)
+        build_drivers(drivers)
 
     return True
 
