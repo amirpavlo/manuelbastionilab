@@ -46,6 +46,7 @@ class ProxyEngine:
     def load_asset(self, assetname):
         scn = bpy.context.scene
         asset_path = os.path.join(self.assets_path,assetname+".blend")
+        algorithms.print_log_report("INFO","loading asset {0}".format(asset_path))
         algorithms.append_object_from_library(asset_path, [assetname])
 
 
