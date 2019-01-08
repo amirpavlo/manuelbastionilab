@@ -7,3 +7,14 @@ data/assets/human_female_casualsuit02_btm.blend filter=lfs diff=lfs merge=lfs -t
 data/assets/human_female_sportsuit01_btm.blend filter=lfs diff=lfs merge=lfs -text
 data/assets/human_male_hair01.blend filter=lfs diff=lfs merge=lfs -text
 data/assets/anime_female_hair01.blend filter=lfs diff=lfs merge=lfs -text
+data/assets/human_female_casualsuit01_top.blend filter=lfs diff=lfs merge=lfs -text
+data/assets/human_female_Harvey_pantsbootsv1.blend filter=lfs diff=lfs merge=lfs -text
+data/assets/human_female_Motorcyclepants.blend filter=lfs diff=lfs merge=lfs -text
+data/assets/human_male_tactical_btm.blend filter=lfs diff=lfs merge=lfs -text
+data/assets/human_male_tactical_top.blend filter=lfs diff=lfs merge=lfs -text
+data/assets/human_male_tactical_boots.blend filter=lfs diff=lfs merge=lfs -text
+data/assets/human_female_jeans.blend filter=lfs diff=lfs merge=lfs -text
+data/assets/human_female_leather_btm.blend filter=lfs diff=lfs merge=lfs -text
+data/assets/human_female_leather_top.blend filter=lfs diff=lfs merge=lfs -text
+data/assets/human_female_tactical_boots.blend filter=lfs diff=lfs merge=lfs -text
+data/assets/human_female_trousers_01.blend filter=lfs diff=lfs merge=lfs -text
