@@ -1949,7 +1949,7 @@ class VIEW3D_PT_tools_ManuelbastioniLAB(bpy.types.Panel):
                     for meta_data_prop in sorted(mblab_humanoid.character_metaproperties.keys()):
                         if "last" not in meta_data_prop:
                             self.layout.prop(obj, meta_data_prop)
-                    self.layout.operator("mbast.reset_allproperties", icon="WORKSPACE")
+                    self.layout.operator("mbast.reset_allproperties", icon="RECOVER_LAST")
                     if mblab_humanoid.get_subd_visibility() == True:
                         self.layout.label(text="Tip: for slow PC, disable the subdivision in Display Options below", icon='INFO')
 
