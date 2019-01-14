@@ -1725,6 +1725,24 @@ class CreateFaceRig(bpy.types.Operator):
                 "Select finalized MB Lab character to create face rig")
         return {'FINISHED'}
 
+class DeleteFaceRig(bpy.types.Operator):
+    bl_idname = "mbast.delete_face_rig"
+    bl_label = "Delete Face Rig"
+    bl_description = "Delete the character's face Rig"
+    bl_context = 'objectmode'
+    bl_options = {'REGISTER', 'INTERNAL','UNDO'}
+
+    def execute(self, context):
+        mblab_shapekeys.update_expressions_data()
+        if mblab_shapekeys.model_type != "NONE":
+            if not facerig.delete_face_rig():
+                self.report({'ERROR'},
+                            "Face Rig deletion failed")
+        else:
+            self.report({'ERROR'},
+                "Select finalized MB Lab character to create face rig")
+        return {'FINISHED'}
+
 class StartSession(bpy.types.Operator):
     bl_idname = "mbast.init_character"
     bl_label = "Create character"
@@ -1799,8 +1817,9 @@ class VIEW3D_PT_tools_ManuelbastioniLAB(bpy.types.Panel):
             self.layout.label(text=" ")
             self.layout.label(text="AFTER-CREATION TOOLS")
 
-            # face rig button
+            # face rig buttons
             self.layout.operator('mbast.create_face_rig')
+            self.layout.operator('mbast.delete_face_rig')
 
             if gui_active_panel_fin != "assets":
                 self.layout.operator('mbast.button_assets_on', icon=icon_expand)
@@ -2218,6 +2237,7 @@ classes = (
     LoadBvh,
     StartSession,
     CreateFaceRig,
+    DeleteFaceRig,
     LoadTemplate,
     VIEW3D_PT_tools_ManuelbastioniLAB,
 )
