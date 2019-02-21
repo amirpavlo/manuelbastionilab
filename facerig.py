@@ -30,7 +30,7 @@ def populate_modifiers(modifiers, mlist):
             populate_modifier(mod, m)
 
 def populate_variable(v, var):
-    face_rig = bpy.data.objects['MBLab_skeleton_face_rig']
+    face_rig = bpy.data.objects[var['targets'][0]['id_name']]
 
     v.name = var['name']
     v.type = var['type']
@@ -63,9 +63,10 @@ def add_rm_drivers(drivers, add=True):
             driver = bpy.data.objects[mname].data.shape_keys.key_blocks[idx]. \
                         driver_add('value')
         else:
-            print("removing: ", shape_name, "idx=", idx)
-            bpy.data.objects[mname].data.shape_keys.key_blocks[idx].\
-                driver_remove('value')
+            rc = bpy.data.objects[mname].data.shape_keys.key_blocks[idx].\
+                    driver_remove('value')
+            if not rc:
+                print("failed to removed: ", shape_name, "idx=", idx)
             continue
 
         # Populate the driver
@@ -124,9 +125,30 @@ def setup_face_rig():
 
     return True
 
+def recursive_collection_delete(head):
+    for c in head.children:
+        recursive_collection_delete(c)
+
+    head.hide_select = False
+    head.hide_render = False
+    head.hide_viewport = False
+
+    for obj in head.all_objects:
+        obj.select_set(True)
+    bpy.ops.object.delete()
+
+    bpy.data.collections.remove(head)
+
 def delete_face_rig():
     # check if the face rig is already imported
-    if bpy.data.objects.find('MBLab_skeleton_face_rig') == -1:
+    facerig = bpy.data.objects.get('MBLab_skeleton_face_rig')
+    if not facerig:
+        algorithms.print_log_report("CRITICAL", "face rig is not added")
+        return False
+
+    # check if the face rig is already imported
+    phoneme = bpy.data.objects.get('MBLab_skeleton_phoneme_rig')
+    if not phoneme:
         algorithms.print_log_report("CRITICAL", "face rig is not added")
         return False
 
@@ -142,6 +164,24 @@ def delete_face_rig():
     with open(json_file, 'r') as f:
         drivers = json.load(f)
         add_rm_drivers(drivers, add=False)
+
+    # store the original selection
+    orig_selection = {}
+    for ob in bpy.context.scene.objects:
+        orig_selection[ob.name] = ob.select_get()
+        ob.select_set(False)
+
+    # delete the face rig
+    facerig.select_set(True)
+    phoneme.select_set(True)
+    bpy.ops.object.delete()
+    c = bpy.data.collections.get('Face_Rig')
+    if c:
+       recursive_collection_delete(c)
+
+    # restore the original selection
+    for ob in bpy.context.scene.objects:
+        ob.select_set(orig_selection[ob.name])
 
     return True
 
