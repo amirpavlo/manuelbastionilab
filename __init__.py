@@ -32,9 +32,12 @@ from bpy_extras.io_utils import ExportHelper, ImportHelper
 from bpy.app.handlers import persistent
 from . import humanoid, animationengine, proxyengine
 from . import facerig
+from . import mb_yasp
 import time
-
-
+import ctypes
+import sys
+import platform
+from bpy.props import EnumProperty, StringProperty, BoolVectorProperty
 
 mblab_humanoid = humanoid.Humanoid(bl_info["version"])
 mblab_retarget = animationengine.RetargetEngine()
@@ -1771,7 +1774,6 @@ class LoadTemplate(bpy.types.Operator):
             obj["manuellab_proxy_reference"] = mblab_humanoid.characters_config[scn.mblab_template_name]["template_model"]
         return {'FINISHED'}
 
-
 class VIEW3D_PT_tools_ManuelbastioniLAB(bpy.types.Panel):
 
     bl_label = "ManuelbastioniLAB {0}.{1}.{2}a".format(bl_info["version"][0],bl_info["version"][1],bl_info["version"][2])
@@ -2240,11 +2242,39 @@ classes = (
     DeleteFaceRig,
     LoadTemplate,
     VIEW3D_PT_tools_ManuelbastioniLAB,
+    mb_yasp.VIEW3D_PT_tools_mb_yasp,
+    mb_yasp.YASP_OT_mark,
+    mb_yasp.YASP_OT_unmark,
+    mb_yasp.YASP_OT_set,
+    mb_yasp.YASP_OT_unset,
+    mb_yasp.YASP_OT_next,
+    mb_yasp.YASP_OT_prev,
+    mb_yasp.YASP_OT_setallKeyframes,
+    mb_yasp.YASP_OT_deleteallKeyframes,
+    mb_yasp.YASP_OT_delete_seq,
 )
 
 def register():
     for cls in classes:
         bpy.utils.register_class(cls)
+
+    bpy.types.Scene.yasp_wave_path = StringProperty(
+        name="Path to wave file",
+        subtype='FILE_PATH',
+        default='',
+        description='Path to wave file')
+
+    bpy.types.Scene.yasp_transcript_path = StringProperty(
+        name="Path to transcript file",
+        subtype='FILE_PATH',
+        default='',
+        description='Path to transcript file')
+
+    bpy.types.Scene.yasp_start_frame = StringProperty(
+        name="Start frame",
+        subtype='FILE_NAME',
+        default='',
+        description='Start audio on specified frame')
 
 def unregister():
     for cls in reversed(classes):
