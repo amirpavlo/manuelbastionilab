@@ -5,40 +5,26 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
-            "expression": "var + 0.0",
-            "is_simple_expression": false,
-            "is_valid": true,
-            "type": "AVERAGE",
-            "use_self": false,
-            "variables": [
-                {
-                    "name": "var",
-                    "is_name_valid": true,
-                    "type": "TRANSFORMS",
-                    "targets": [
-                        {
-                            "id_type": "OBJECT",
-                            "id_name": "MBLab_skeleton_face_rig",
-                            "transform_space": "LOCAL_SPACE",
-                            "transform_type": "ROT_X",
-                            "bone_target": "Expressions_mouthOpen_max_min"
-                        }
-                    ]
-                }
-            ]
-        }
-    },
-    "driver2": {
-        "data_path": "key_blocks[\"Expressions_mouthOpen_min\"].value",
-        "hide": false,
-        "lock": false,
-        "mute": false,
-        "select": false,
-        "modifiers": [],
-        "driver": {
-            "expression": "-var",
+            "expression": "var + (ph_AI/3) + (ph_E/15) + (ph_U/15) + (ph_CDG/7.855) + (ph_L/6.33468)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -55,6 +41,138 @@
                             "transform_space": "LOCAL_SPACE",
                             "transform_type": "ROT_X",
                             "bone_target": "Expressions_mouthOpen_max_min"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_AI",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_AI"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_E",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_E"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_U",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_U"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_CDG",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_CDGKNRSYZ"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_L",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_L"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "driver2": {
+        "data_path": "key_blocks[\"Expressions_mouthOpen_min\"].value",
+        "hide": false,
+        "lock": false,
+        "mute": false,
+        "select": false,
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
+        "driver": {
+            "expression": "(-var) + (ph_MBP/2.078)",
+            "is_simple_expression": true,
+            "is_valid": true,
+            "type": "SCRIPTED",
+            "use_self": false,
+            "variables": [
+                {
+                    "name": "var",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_face_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_X",
+                            "bone_target": "Expressions_mouthOpen_max_min"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_MBP",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_MBP"
                         }
                     ]
                 }
@@ -81,15 +199,15 @@
                 "use_influence": false,
                 "coefficients": [
                     0.0,
-                    5.0
+                    1.0
                 ]
             }
         ],
         "driver": {
-            "expression": "var + 0.0",
-            "is_simple_expression": false,
+            "expression": "(var*5)+(ph_AI/2)+(ph_E/5) + (ph_CDG/6.36)",
+            "is_simple_expression": true,
             "is_valid": true,
-            "type": "AVERAGE",
+            "type": "SCRIPTED",
             "use_self": false,
             "variables": [
                 {
@@ -103,6 +221,48 @@
                             "transform_space": "LOCAL_SPACE",
                             "transform_type": "LOC_Y",
                             "bone_target": "Expressions_mouthSmileL_max.L"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_AI",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_AI"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_E",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_E"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_CDG",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_CDGKNRSYZ"
                         }
                     ]
                 }
@@ -129,16 +289,16 @@
                 "use_influence": false,
                 "coefficients": [
                     0.0,
-                    5.0
+                    1.0
                 ]
             }
         ],
         "driver": {
-            "expression": "var + 0.0",
-            "is_simple_expression": false,
+            "expression": "(var*5) + (ph_AI/2) + (ph_E/5) + (ph_CDG/6.36)",
+            "is_simple_expression": true,
             "is_valid": true,
-            "type": "AVERAGE",
-            "use_self": false,
+            "type": "SCRIPTED",
+            "use_self": true,
             "variables": [
                 {
                     "name": "var",
@@ -151,6 +311,48 @@
                             "transform_space": "LOCAL_SPACE",
                             "transform_type": "LOC_Y",
                             "bone_target": "Expressions_mouthSmileL_max.R"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_AI",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_AI"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_E",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_E"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_CDG",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_CDGKNRSYZ"
                         }
                     ]
                 }
@@ -259,9 +461,26 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
-            "expression": "var",
+            "expression": "var + (ph_TH/5.776)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -280,6 +499,20 @@
                             "bone_target": "Expressions_mouthBite_max"
                         }
                     ]
+                },
+                {
+                    "name": "ph_TH",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_TH"
+                        }
+                    ]
                 }
             ]
         }
@@ -290,9 +523,26 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
-            "expression": "var",
+            "expression": "var + (ph_TH/5.776)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -311,6 +561,20 @@
                             "bone_target": "Expressions_mouthBite_min"
                         }
                     ]
+                },
+                {
+                    "name": "ph_TH",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_TH"
+                        }
+                    ]
                 }
             ]
         }
@@ -321,7 +585,24 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
             "expression": "var + 0.0",
             "is_simple_expression": true,
@@ -352,9 +633,26 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
-            "expression": "-var",
+            "expression": "(-var) + (ph_FV/1.571)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -373,6 +671,20 @@
                             "bone_target": "Expressions_jawOut_max_min"
                         }
                     ]
+                },
+                {
+                    "name": "ph_FV",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_FV"
+                        }
+                    ]
                 }
             ]
         }
@@ -383,7 +695,24 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
             "expression": "var + 0.0",
             "is_simple_expression": true,
@@ -414,7 +743,24 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
             "expression": "var + 0.0",
             "is_simple_expression": true,
@@ -445,7 +791,24 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
             "expression": "var + 0.0",
             "is_simple_expression": true,
@@ -476,7 +839,24 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
             "expression": "-var",
             "is_simple_expression": true,
@@ -507,7 +887,24 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
             "expression": "var + 0.0",
             "is_simple_expression": true,
@@ -538,7 +935,24 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
             "expression": "-var",
             "is_simple_expression": true,
@@ -569,7 +983,24 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
             "expression": "var + 0.0",
             "is_simple_expression": true,
@@ -600,7 +1031,24 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
             "expression": "-var",
             "is_simple_expression": true,
@@ -1015,7 +1463,24 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
             "expression": "var + 0.0",
             "is_simple_expression": true,
@@ -1046,7 +1511,24 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
             "expression": "-var",
             "is_simple_expression": true,
@@ -1077,7 +1559,24 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
             "expression": "var + 0.0",
             "is_simple_expression": true,
@@ -1108,7 +1607,24 @@
         "lock": false,
         "mute": false,
         "select": false,
-        "modifiers": [],
+        "modifiers": [
+            {
+                "active": true,
+                "blend_in": 0.0,
+                "blend_out": 0.0,
+                "influence": 1.0,
+                "mode": "POLYNOMIAL",
+                "mute": false,
+                "poly_order": 1,
+                "type": "GENERATOR",
+                "use_additive": false,
+                "use_influence": false,
+                "coefficients": [
+                    0.0,
+                    1.0
+                ]
+            }
+        ],
         "driver": {
             "expression": "-var",
             "is_simple_expression": true,
@@ -1681,12 +2197,12 @@
                 "use_influence": false,
                 "coefficients": [
                     0.0,
-                    2.0
+                    1.0
                 ]
             }
         ],
         "driver": {
-            "expression": "-var",
+            "expression": "(-var*2) ",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -1969,16 +2485,16 @@
                 "use_influence": false,
                 "coefficients": [
                     0.0,
-                    2.0
+                    1.0
                 ]
             }
         ],
         "driver": {
-            "expression": "var",
+            "expression": "(var * 2) + (ph_FV/5.202)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
-            "use_self": false,
+            "use_self": true,
             "variables": [
                 {
                     "name": "var",
@@ -1991,6 +2507,20 @@
                             "transform_space": "LOCAL_SPACE",
                             "transform_type": "ROT_X",
                             "bone_target": "Expressions_mouthLowerOut_max_min"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_FV",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_FV"
                         }
                     ]
                 }
@@ -2017,12 +2547,12 @@
                 "use_influence": false,
                 "coefficients": [
                     0.0,
-                    2.0
+                    1.0
                 ]
             }
         ],
         "driver": {
-            "expression": "-var",
+            "expression": "((var*2) * -1) + (ph_AI/6) + (ph_CDG/4.82) + (ph_CH/9.638)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -2039,6 +2569,48 @@
                             "transform_space": "LOCAL_SPACE",
                             "transform_type": "ROT_X",
                             "bone_target": "Expressions_mouthOpenAggr_max_min"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_AI",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_AI"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_CDG",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_CDGKNRSYZ"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_CH",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_CH"
                         }
                     ]
                 }
@@ -2070,7 +2642,7 @@
             }
         ],
         "driver": {
-            "expression": "var",
+            "expression": " var + (ph_E/6) + (ph_FV/6.2341) + (ph_TH/8)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -2087,6 +2659,48 @@
                             "transform_space": "LOCAL_SPACE",
                             "transform_type": "ROT_X",
                             "bone_target": "Expressions_mouthOpenAggr_max_min"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_E",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_E"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_FV",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_FV"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_TH",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_TH"
                         }
                     ]
                 }
@@ -2161,12 +2775,12 @@
                 "use_influence": false,
                 "coefficients": [
                     0.0,
-                    2.0
+                    1.0
                 ]
             }
         ],
         "driver": {
-            "expression": "-var",
+            "expression": "(-var*2) + (ph_O/7.45) + (ph_REST/12.877)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -2183,6 +2797,34 @@
                             "transform_space": "LOCAL_SPACE",
                             "transform_type": "ROT_X",
                             "bone_target": "Expressions_mouthOpenO_max_min"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_O",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_O"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_REST",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_REST"
                         }
                     ]
                 }
@@ -2214,7 +2856,7 @@
             }
         ],
         "driver": {
-            "expression": "var",
+            "expression": "var + (ph_U/1.571) + (ph_WQ/4.5274)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -2231,6 +2873,34 @@
                             "transform_space": "LOCAL_SPACE",
                             "transform_type": "ROT_X",
                             "bone_target": "Expressions_mouthOpenO_max_min"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_U",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_U"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_WQ",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_WQ"
                         }
                     ]
                 }
@@ -2257,12 +2927,12 @@
                 "use_influence": false,
                 "coefficients": [
                     0.0,
-                    2.0
+                    1.0
                 ]
             }
         ],
         "driver": {
-            "expression": "-var",
+            "expression": "(-var*2) + (ph_E/4) + (ph_CH/2.132)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -2281,6 +2951,34 @@
                             "bone_target": "Expressions_mouthOpenTeethClosed_max_min"
                         }
                     ]
+                },
+                {
+                    "name": "ph_E",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_E"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_CH",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_CH"
+                        }
+                    ]
                 }
             ]
         }
@@ -2290,7 +2988,7 @@
         "hide": false,
         "lock": false,
         "mute": false,
-        "select": false,
+        "select": true,
         "modifiers": [
             {
                 "active": true,
@@ -2310,7 +3008,7 @@
             }
         ],
         "driver": {
-            "expression": "var",
+            "expression": "var + (ph_O/2.571) + (ph_L/14.962)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -2327,6 +3025,34 @@
                             "transform_space": "LOCAL_SPACE",
                             "transform_type": "ROT_X",
                             "bone_target": "Expressions_mouthOpenTeethClosed_max_min"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_O",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_O"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_L",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_L"
                         }
                     ]
                 }
@@ -2353,12 +3079,12 @@
                 "use_influence": false,
                 "coefficients": [
                     0.0,
-                    2.0
+                    1.0
                 ]
             }
         ],
         "driver": {
-            "expression": "-var",
+            "expression": "(-var*2) + (ph_E/7)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -2375,6 +3101,20 @@
                             "transform_space": "LOCAL_SPACE",
                             "transform_type": "ROT_X",
                             "bone_target": "Expressions_mouthSmileOpen2_max_min"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_E",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_E"
                         }
                     ]
                 }
@@ -2449,12 +3189,12 @@
                 "use_influence": false,
                 "coefficients": [
                     0.0,
-                    2.0
+                    1.0
                 ]
             }
         ],
         "driver": {
-            "expression": "-var",
+            "expression": "(-var * 2) + (ph_CDG/4.438)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -2471,6 +3211,20 @@
                             "transform_space": "LOCAL_SPACE",
                             "transform_type": "ROT_X",
                             "bone_target": "Expressions_mouthSmileOpen_max_min"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_CDG",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_CDGKNRSYZ"
                         }
                     ]
                 }
@@ -2881,12 +3635,12 @@
                 "use_influence": false,
                 "coefficients": [
                     0.0,
-                    2.0
+                    1.0
                 ]
             }
         ],
         "driver": {
-            "expression": "-var",
+            "expression": "(-var * 2) + (ph_TH/12.77235)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -2903,6 +3657,20 @@
                             "transform_space": "LOCAL_SPACE",
                             "transform_type": "ROT_X",
                             "bone_target": "Expressions_tongueOut_max_min"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_TH",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_TH"
                         }
                     ]
                 }
@@ -2977,12 +3745,12 @@
                 "use_influence": false,
                 "coefficients": [
                     0.0,
-                    2.0
+                    1.0
                 ]
             }
         ],
         "driver": {
-            "expression": "-var",
+            "expression": "(-var*2) + (ph_TH/11.467) + (ph_L/7.5167)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -2999,6 +3767,34 @@
                             "transform_space": "LOCAL_SPACE",
                             "transform_type": "ROT_X",
                             "bone_target": "Expressions_tongueTipUp_max"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_TH",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_TH"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_L",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_L"
                         }
                     ]
                 }
@@ -3025,12 +3821,12 @@
                 "use_influence": false,
                 "coefficients": [
                     0.0,
-                    2.0
+                    1.0
                 ]
             }
         ],
         "driver": {
-            "expression": "-var",
+            "expression": "(-var*2) + (ph_TH/5.436) + (ph_L/6.4385)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -3047,6 +3843,34 @@
                             "transform_space": "LOCAL_SPACE",
                             "transform_type": "ROT_X",
                             "bone_target": "Expressions_tongueVert_max_min"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_TH",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_TH"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_L",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_L"
                         }
                     ]
                 }
@@ -3217,12 +4041,12 @@
                 "use_influence": false,
                 "coefficients": [
                     0.0,
-                    2.0
+                    1.0
                 ]
             }
         ],
         "driver": {
-            "expression": "-var",
+            "expression": "(-var*2) + (ph_O/20) + (ph_TH/10)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -3239,6 +4063,34 @@
                             "transform_space": "LOCAL_SPACE",
                             "transform_type": "ROT_X",
                             "bone_target": "Expressions_mouthOpenLarge_max_min"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_O",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_O"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_TH",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_TH"
                         }
                     ]
                 }
@@ -3265,12 +4117,12 @@
                 "use_influence": false,
                 "coefficients": [
                     0.0,
-                    2.0
+                    1.0
                 ]
             }
         ],
         "driver": {
-            "expression": "var",
+            "expression": "(var*2) + (ph_WQ/2.695)",
             "is_simple_expression": true,
             "is_valid": true,
             "type": "SCRIPTED",
@@ -3287,6 +4139,20 @@
                             "transform_space": "LOCAL_SPACE",
                             "transform_type": "ROT_X",
                             "bone_target": "Expressions_mouthOpenLarge_max_min"
+                        }
+                    ]
+                },
+                {
+                    "name": "ph_WQ",
+                    "is_name_valid": true,
+                    "type": "TRANSFORMS",
+                    "targets": [
+                        {
+                            "id_type": "OBJECT",
+                            "id_name": "MBLab_skeleton_phoneme_rig",
+                            "transform_space": "LOCAL_SPACE",
+                            "transform_type": "ROT_Z",
+                            "bone_target": "ph_WQ"
                         }
                     ]
                 }
