@@ -10,8 +10,10 @@ import time
 import ctypes
 import sys
 import platform
+import random
 from bpy.props import EnumProperty, StringProperty, BoolVectorProperty
 
+random.seed(23483)
 addon_path = os.path.dirname(os.path.realpath(__file__))
 yasp_sphinx_dir = os.path.join(addon_path, "yasp", "sphinxinstall", "lib")
 yasp_libs_dir = os.path.join(addon_path, "yasp", "yaspbin")
@@ -121,22 +123,26 @@ class Sequence(object):
     def animate_all_markers(self):
         idx = 0
         bpy.ops.pose.select_all(action='DESELECT')
+        pm = None
         for m in self.markers:
-            self.set_keyframe(m, idx)
+            self.set_keyframe(m, pm, idx)
+            pm = m
             idx = idx + 1
 
     def animate_marker_at_frame(self, cur_frame):
         idx = 0
         found = False
+        pm = None
         for m in self.markers:
             if m.frame == cur_frame:
                 found = True
                 break
+            pm = m
             idx = idx + 1
 
         if found:
             print(m.frame, idx)
-            self.set_keyframe(m, idx)
+            self.set_keyframe(m, pm, idx)
 
     def del_all_keyframes(self):
         idx = 0
@@ -149,19 +155,47 @@ class Sequence(object):
 
     def del_keyframe(self, frame):
         for bone in bpy.context.object.pose.bones:
-            bone.keyframe_delete('rotation_quaternion', index=3, frame=frame)
+            rc = bone.keyframe_delete('rotation_quaternion', index=3,
+                                       frame=frame)
+            print('deleting keyframe:', frame, 'for bone: ', bone.name, 'rc = ', rc)
 
-    def set_keyframe(self, m, idx):
+    def set_random_rest_pose(self, frame):
+        bone = bpy.context.object.pose.bones['ph_REST']
+        bone.rotation_quaternion[3] = random.uniform(0, 1)
+        bone.keyframe_insert('rotation_quaternion', index=3, frame=frame)
+
+    def set_keyframe(self, m, pm, idx):
         if idx == 0:
-            frame = (m.frame - 1) / 2
+            if (m.frame - 1) <= 5:
+                frame = 1
+            else:
+                frame = m.frame - 5
             self.reset_all_bones(bpy.context.object.pose.bones, frame)
         self.reset_all_bones(bpy.context.object.pose.bones, m.frame)
+
+        delta = 0
+        # Heuristic: If the delta between this marker and the previous
+        # marker is >= 12 frames then we want to set a rest
+        # in/out poses
+        # Heuristic: If the delta is < 12 then we want to have a rest pose
+        # in the middle
+        if pm:
+            delta = m.frame - pm.frame
+        if delta >= 12:
+            percent = round(delta * 0.08)
+            percent2 = round(delta * 0.20)
+            self.reset_all_bones(bpy.context.object.pose.bones, pm.frame + percent)
+            self.set_random_rest_pose(pm.frame + percent2)
+            self.set_random_rest_pose(m.frame - percent2)
+            self.reset_all_bones(bpy.context.object.pose.bones, m.frame - percent)
+        elif delta < 12 and delta > 7:
+            self.reset_all_bones(bpy.context.object.pose.bones, pm.frame + round(delta/2))
+            self.set_random_rest_pose(pm.frame + round(delta/2))
 
         phonemes = yaspmapper.get_phoneme_animation_data(m.name)
         if not phonemes:
             print("Can't find corresponding mapping for:", m.name)
             return
-        prev_phonemes = phonemes
         for phone in phonemes:
             bone_name = 'ph_'+phone[0]
             bone = bpy.context.object.pose.bones[bone_name]
@@ -291,7 +325,8 @@ class YASP_OT_mark(bpy.types.Operator):
         return True
 
     def free_json_str(self, json_str):
-        yasp.yasp_free_json_str(json_str)
+        #yasp.yasp_free_json_str(json_str)
+        return
 
     def run_yasp(self, wave, transcript, offset):
         if not wave or not transcript:
@@ -491,7 +526,7 @@ class YASP_OT_unset(bpy.types.Operator):
             self.report({'ERROR'}, "Phoneme Rig not found")
             return {'FINISHED'}
 
-        seqmgr.animate_keyframe(seq, scn)
+        seqmgr.del_keyframe(seq, scn)
         return {'FINISHED'}
 
 class YASP_OT_next(bpy.types.Operator):
