@@ -71,20 +71,38 @@ class Bone(object):
         # keeps the frame number of the keyframe, the value of the
         # z rotation and boolean if it's fake or real.
         self.animation_data = {}
-        self.mybond = bone
+        self.mybone = bone
 
     def get_name(self):
-        return bone.name
+        return self.mybone.name
 
     # inserts an actual keyframe if actual=True. If actual=False then it
     # inserts it in the list, but doesn't create a keyframe. The purpose
     # of that is we might want to do a heuristics pass over the keyframes
     # to clean it up.
     def insert_keyframe(self, frame, value):
+        #print("insert frame: ", self.get_name(), "[",frame,",", value, "]")
         self.animation_data[frame] = value
+        k = list(self.animation_data.keys())
+        if len(k) > 1:
+            if k[-1] - k[-2] < 0:
+                print(k[-1], k[-2])
+                raise ValueError
 
     def del_keyframe(self, frame):
-        self.bone.keyframe_delete('rotation_quaternion', index=3, frame=frame)
+        try:
+            self.mybone.keyframe_delete('rotation_quaternion', index=3, frame=frame)
+        except:
+            return
+
+    def del_keyframes(self):
+        for k, v in self.animation_data.items():
+            try:
+                self.mybone.keyframe_delete('rotation_quaternion', index=3,
+                                            frame=k)
+            except:
+                return
+        self.animation_data = {}
 
     def animate(self):
         for k, v in self.animation_data.items():
@@ -113,27 +131,66 @@ class Bone(object):
     # next one
     def heuristic_pass(self):
         prev_k = 0
-        key_list = self.animation_data.keys()
-        value_list = self.animation_data.values()
+        key_list = list(self.animation_data.keys())
+        value_list = list(self.animation_data.values())
         num_kf = len(key_list)
         # the animation data is in chronological order
         i = 0
         for k in key_list:
             if i == 0 or i == (num_kf - 1):
+                i = i + 1
                 continue
             prev_key = key_list[i-1]
             next_key = key_list[i+1]
-            if k - prev_key <= 5 and next_key - k <= 5:
+            if k - prev_key <= 2 and next_key - k <= 2:
                 self.animation_data[k] = (value_list[i-1] + value_list[i+1]) / 2
+                print("Heuristic Pass: ", self.get_name(), "[",k ,",", self.animation_data[k], "]")
             i = i + 1
         return
 
+    def heuristic_pass2(self, window_size):
+        # Define a window, where the current key frame is in the middle.
+        # The current key frame is calculated as the average of the values
+        # of the key frames surrounding it.
+        if window_size == 0:
+            return
+        key_list = list(self.animation_data.keys())
+        value_list = list(self.animation_data.values())
+        num_kf = len(key_list)
+        i = 0
+        # this is a float for upper/lower calculations just convert it to
+        # an int
+        wsi = int(window_size)
+        for k in key_list:
+            upper = min(num_kf - 1, i + wsi)
+            lower = min(i, i - wsi)
+            lower = max(i, lower)
+            total_value = 0
+            for j in range(lower, upper):
+                total_value = total_value + value_list[j]
+            # use the float value to calculate the avg
+            avg = total_value / window_size
+            # don't drop the key frame value more than a 1/3 of its
+            # original value
+            avg = max(self.animation_data[k] - self.animation_data[k]/3, avg)
+            self.animation_data[k] = avg
+            print("window [", lower, "-", upper, "] = ", avg)
+            i = i + 1
+
 # each sequence can have multiple markers associated with it.
 class Sequence(object):
-    def __init__(self, seq, bones):
+    def __init__(self, seq):
         self.sequence = seq
         self.markers = []
         self.bones = {}
+        self.bones_set = False
+
+    def set_bones(self, bones):
+        if self.bones_set == True:
+            return
+
+        self.bones_set = True
+
         for bone in bones:
             b = Bone(bone)
             self.bones[b.get_name()] = b
@@ -180,18 +237,9 @@ class Sequence(object):
 
     def reset_all_bones(self, frame):
         for k, bone in self.bones.items():
-            bone.rotation_quaternion[3] = 0
             bone.insert_keyframe(frame, 0)
 
     def set_keyframe(self, m, pm, idx):
-        if idx == 0:
-            if (m.frame - 1) <= 5:
-                frame = 1
-            else:
-                frame = m.frame - 5
-            self.reset_all_bones(frame)
-        self.reset_all_bones(m.frame)
-
         delta = 0
         # Heuristic: If the delta between this marker and the previous
         # marker is >= 12 frames then we want to set a rest
@@ -203,13 +251,25 @@ class Sequence(object):
         if delta >= 12:
             percent = round(delta * 0.08)
             percent2 = round(delta * 0.20)
-            self.reset_all_bones(pm.frame + percent)
+            try:
+                self.reset_all_bones(pm.frame + percent)
+            except:
+                print(pm.frame, m.frame)
+                raise ValueError
             self.set_random_rest_pose(pm.frame + percent2)
             self.set_random_rest_pose(m.frame - percent2)
             self.reset_all_bones(m.frame - percent)
         elif delta < 12 and delta > 7:
             self.reset_all_bones(pm.frame + round(delta/2))
             self.set_random_rest_pose(pm.frame + round(delta/2))
+
+        if idx == 0:
+            if (m.frame - 1) <= 5:
+                frame = 1
+            else:
+                frame = m.frame - 5
+            self.reset_all_bones(frame)
+        self.reset_all_bones(m.frame)
 
         phonemes = yaspmapper.get_phoneme_animation_data(m.name)
         if not phonemes:
@@ -240,7 +300,7 @@ class Sequence(object):
         # second pass is to run a heuristic pass on the animation data and
         # animate
         for k, bone in self.bones.items():
-            bone.heuristic_pass()
+            bone.heuristic_pass2(float(bpy.context.scene.yasp_avg_window_size))
             bone.animate()
 
     def animate_marker_at_frame(self, cur_frame):
@@ -259,18 +319,14 @@ class Sequence(object):
             self.set_keyframe(m, pm, idx)
 
     def del_all_keyframes(self):
-        idx = 0
-        for m in self.markers:
-            if idx == 0:
-                frame = (m.frame - 1) / 2
-                self.del_keyframe(frame)
-                idx = idx + 1
-            self.del_keyframe(m.frame)
+        for k, bone in self.bones.items():
+            bone.del_keyframes()
+        phoneme_rig = bpy.data.objects.get('MBLab_skeleton_phoneme_rig')
+        phoneme_rig.animation_data_clear()
 
     def del_keyframe(self, frame):
         for k, bone in self.bones.items():
-            bone.del_keyframe('rotation_quaternion', index=3,
-                              frame=frame)
+            bone.del_keyframe(frame)
 
     def set_random_rest_pose(self, frame):
         bone = self.bones['ph_REST']
@@ -288,7 +344,7 @@ class SequenceMgr(object):
             self.orig_frame_set = True
 
     def add_sequence(self, s):
-        seq = Sequence(s, bpy.context.object.pose.bones)
+        seq = Sequence(s)
         self.sequences.append(seq)
 
     def del_sequence(self, s):
@@ -300,6 +356,12 @@ class SequenceMgr(object):
             if seq.is_sequence(s):
                 return seq
         return None
+
+    def set_bones(self, s, bones):
+        seq = self.get_sequence(s)
+        if not seq:
+            return
+        seq.set_bones(bones)
 
     def unmark_sequence(self, s, scn):
         seq = self.get_sequence(s)
@@ -332,12 +394,6 @@ class SequenceMgr(object):
         if not seq:
             return
         seq.move_to_prev_marker(scn)
-
-    def run_heuristics(self, s):
-        seq = self.get_sequence(s)
-        if not seq:
-            return
-        seq.run_heuristics()
 
     def animate_all_markers(self, s):
         seq = self.get_sequence(s)
@@ -532,12 +588,13 @@ def set_animation_prereq(scn):
     phoneme_rig.select_set(True)
     bpy.context.view_layer.objects.active = phoneme_rig
     bpy.ops.object.mode_set(mode='POSE')
+    seqmgr.set_bones(seq, bpy.context.object.pose.bones)
     return 'SUCCESS', seq
 
 
 class YASP_OT_setallKeyframes(bpy.types.Operator):
     bl_idname = "yasp.set_all_keyframes"
-    bl_label = "Set All"
+    bl_label = "Animate"
     bl_description = "Set all marked lip-sync keyframe"
 
     def execute(self, context):
@@ -550,15 +607,13 @@ class YASP_OT_setallKeyframes(bpy.types.Operator):
             self.report({'ERROR'}, "Phoneme Rig not found")
             return {'FINISHED'}
 
-        # Run heuristic path
-        seqmgr.run_heuristics(seq)
         # insert key frames on all markers.
         seqmgr.animate_all_markers(seq)
         return {'FINISHED'}
 
 class YASP_OT_deleteallKeyframes(bpy.types.Operator):
     bl_idname = "yasp.delete_all_keyframes"
-    bl_label = "Unset All"
+    bl_label = "Remove Animation"
     bl_description = "Set all marked lip-sync keyframe"
 
     def execute(self, context):
@@ -667,6 +722,8 @@ class VIEW3D_PT_tools_mb_yasp(bpy.types.Panel):
         col.prop(scn, "yasp_transcript_path", text="")
         col.label(text="Start on frame")
         col.prop(scn, "yasp_start_frame", text="")
+        col.label(text="Window Size")
+        col.prop(scn, "yasp_avg_window_size", text="")
         col = layout.column(align=True)
         row = col.row(align=False)
         row.operator('yasp.mark_audio', icon='MARKER_HLT')
@@ -684,6 +741,6 @@ class VIEW3D_PT_tools_mb_yasp(bpy.types.Panel):
         row.operator('yasp.prev_marker', icon='PREV_KEYFRAME')
         row.operator('yasp.next_marker', icon='NEXT_KEYFRAME')
         col = layout.column(align=True)
-        col.operator('yasp.delete_seq', icon='DECORATE_KEYFRAME')
+        col.operator('yasp.delete_seq', icon='KEYFRAME')
 
 

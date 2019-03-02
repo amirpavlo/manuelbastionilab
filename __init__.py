@@ -2276,6 +2276,12 @@ def register():
         default='',
         description='Start audio on specified frame')
 
+    bpy.types.Scene.yasp_avg_window_size = StringProperty(
+        name="Avg Window",
+        subtype='FILE_NAME',
+        default='0',
+        description='Average keyframe values within the window')
+
 def unregister():
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
