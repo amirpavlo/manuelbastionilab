@@ -1,4 +1,5 @@
 import bpy
+import logging
 import os
 import json
 from bpy_extras.io_utils import ExportHelper, ImportHelper
@@ -23,6 +24,8 @@ sphinxadlib = None
 sphinxbaselib = None
 yasplib = None
 
+logger = logging.getLogger(__name__)
+
 # Load the .so files we need
 # Then import yasp
 # Now we're ready to do some speech parsing
@@ -37,10 +40,11 @@ def yasp_load_dep():
         sphinxbaselib = ctypes.cdll.LoadLibrary(sphinxbase)
         yasplib = ctypes.cdll.LoadLibrary(yasp)
     except:
-       print("Failed to load libraries")
+       logger.critical("Failed to load libraries")
 
-yasp_load_dep()
-import yasp
+if platform.system() == "Linux":
+    yasp_load_dep()
+    import yasp
 
 # class maps yasp phoneme Mapper
 # YASP produces a more nuanced phonemes. We need to reduce that to the set
@@ -50,12 +54,12 @@ class YASP2MBPhonemeMapper(object):
         self.yasp_2_mb_phoneme_map = None
         data_path = algorithms.get_data_path()
         if not data_path:
-            algorithms.print_log_report("CRITICAL", "{0} not found. Please check your Blender addons directory. Might need to reinstall ManuelBastioniLab".format(data_path))
+            logger.critical("CRITICAL", "%s not found. Please check your Blender addons directory. Might need to reinstall ManuelBastioniLab", data_path)
             raise ValueError("No Data directory")
 
         map_file = os.path.join(data_path, 'face_rig', 'yasp_map.json')
         if not map_file:
-            algorithms.print_log_report("CRITICAL", "{0} not found. Please check your Blender addons directory. Might need to reinstall ManuelBastioniLab".format(map_file))
+            logger.critical("CRITICAL", "%s not found. Please check your Blender addons directory. Might need to reinstall ManuelBastioniLab", map_file)
         with open(map_file, 'r') as f:
             self.yasp_2_mb_phoneme_map = json.load(f)
 
@@ -81,13 +85,7 @@ class Bone(object):
     # of that is we might want to do a heuristics pass over the keyframes
     # to clean it up.
     def insert_keyframe(self, frame, value):
-        #print("insert frame: ", self.get_name(), "[",frame,",", value, "]")
         self.animation_data[frame] = value
-        k = list(self.animation_data.keys())
-        if len(k) > 1:
-            if k[-1] - k[-2] < 0:
-                print(k[-1], k[-2])
-                raise ValueError
 
     def del_keyframe(self, frame):
         try:
@@ -144,7 +142,6 @@ class Bone(object):
             next_key = key_list[i+1]
             if k - prev_key <= 2 and next_key - k <= 2:
                 self.animation_data[k] = (value_list[i-1] + value_list[i+1]) / 2
-                print("Heuristic Pass: ", self.get_name(), "[",k ,",", self.animation_data[k], "]")
             i = i + 1
         return
 
@@ -174,7 +171,6 @@ class Bone(object):
             # original value
             avg = max(self.animation_data[k] - self.animation_data[k]/3, avg)
             self.animation_data[k] = avg
-            print("window [", lower, "-", upper, "] = ", avg)
             i = i + 1
 
 # each sequence can have multiple markers associated with it.
@@ -251,11 +247,7 @@ class Sequence(object):
         if delta >= 12:
             percent = round(delta * 0.08)
             percent2 = round(delta * 0.20)
-            try:
-                self.reset_all_bones(pm.frame + percent)
-            except:
-                print(pm.frame, m.frame)
-                raise ValueError
+            self.reset_all_bones(pm.frame + percent)
             self.set_random_rest_pose(pm.frame + percent2)
             self.set_random_rest_pose(m.frame - percent2)
             self.reset_all_bones(m.frame - percent)
@@ -273,7 +265,7 @@ class Sequence(object):
 
         phonemes = yaspmapper.get_phoneme_animation_data(m.name)
         if not phonemes:
-            print("Can't find corresponding mapping for:", m.name)
+            logger.critical("Can't find corresponding mapping for:", m.name)
             return
         for phone in phonemes:
             bone_name = 'ph_'+phone[0]
@@ -315,7 +307,6 @@ class Sequence(object):
             idx = idx + 1
 
         if found:
-            print(m.frame, idx)
             self.set_keyframe(m, pm, idx)
 
     def del_all_keyframes(self):
@@ -451,11 +442,9 @@ class YASP_OT_mark(bpy.types.Operator):
                     frame = round((scn.render.fps/scn.render.fps_base) *
                                   (phone['start'] / 100))
                     cur_frame = offset + frame
-                    #print(cur_frame, frame)
                     seqmgr.mark_seq_at_frame(seq, phone['phoneme'], cur_frame, scn)
                 except Exception as e:
-                    print(e)
-                    print('something else is wrong')
+                    logger.critical(e)
                     return False
         return True
 
