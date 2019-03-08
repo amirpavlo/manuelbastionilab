@@ -16,6 +16,7 @@ from bpy.props import EnumProperty, StringProperty, BoolVectorProperty
 
 random.seed(23483)
 addon_path = os.path.dirname(os.path.realpath(__file__))
+yasp_model_dir = os.path.join(addon_path, "yasp", "sphinxinstall", "share", "pocketsphinx", "model")
 yasp_sphinx_dir = os.path.join(addon_path, "yasp", "sphinxinstall", "lib")
 yasp_libs_dir = os.path.join(addon_path, "yasp", "yaspbin")
 sys.path.append(yasp_libs_dir)
@@ -469,6 +470,7 @@ class YASP_OT_mark(bpy.types.Operator):
             return None
 
         logs = yasp.yasp_logs()
+        yasp.yasp_set_modeldir(yasp_model_dir)
         yasp.yasp_setup_logging(logs, None, "MB_YASP_Logs")
         json_str = yasp.yasp_interpret_get_str(wave, transcript, None)
         yasp.yasp_finish_logging(logs)
