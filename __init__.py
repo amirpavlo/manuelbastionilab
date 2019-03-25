@@ -1719,9 +1719,17 @@ class CreateFaceRig(bpy.types.Operator):
     def execute(self, context):
         mblab_shapekeys.update_expressions_data()
         if mblab_shapekeys.model_type != "NONE":
-            if not facerig.setup_face_rig():
+            rc = facerig.setup_face_rig()
+            if not rc:
                 self.report({'ERROR'},
                             "Face Rig creation process failed")
+                return {'FINISHED'}
+            else:
+                rc = facerig.setup_facs_rig()
+                if not rc:
+                    self.report({'ERROR'},
+                                "FACS Rig creation process failed")
+                    return {'FINISHED'}
         else:
             self.report({'ERROR'},
                 "Select finalized MB Lab character to create face rig")
